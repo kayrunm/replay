@@ -1,0 +1,39 @@
+{
+    "name": "kayrunm/replay",
+    "description": "A simple package for idempotent requests in Laravel.",
+    "keywords": [
+        "idempotent",
+        "idempotency",
+        "laravel"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kieran Marshall",
+            "email": "kieranm93@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "illuminate/http": "^8"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.9.5",
+        "phpstan/phpstan": "^0.12.2",
+        "phpstan/phpstan-phpunit": "^0.12.1",
+        "phpunit/phpunit": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kayrunm\\Replay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
