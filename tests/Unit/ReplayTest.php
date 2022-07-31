@@ -6,13 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Kayrunm\Replay\Cache\Repository;
-use Kayrunm\Replay\Idempotent;
+use Kayrunm\Replay\Replay;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class IdempotentTest extends TestCase
+class ReplayTest extends TestCase
 {
-    private Idempotent $middleware;
+    private Replay $middleware;
 
     /** @var Repository|MockObject */
     private $repository;
@@ -23,7 +23,7 @@ class IdempotentTest extends TestCase
 
         $this->repository = $this->createMock(Repository::class);
 
-        $this->middleware = new Idempotent(
+        $this->middleware = new Replay(
             $this->repository
         );
     }

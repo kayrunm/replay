@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Kayrunm\Replay\Cache\Repository;
 
-class Idempotent
+class Replay
 {
     private Repository $repository;
 
