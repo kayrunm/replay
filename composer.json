@@ -38,5 +38,15 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "stan": "phpstan analyse",
+        "style": "php-cs-fixer fix",
+        "review": [
+            "@test",
+            "@stan",
+            "@style"
+        ]
     }
 }

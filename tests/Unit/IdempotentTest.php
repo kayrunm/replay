@@ -7,20 +7,21 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Kayrunm\Replay\Cache\Repository;
 use Kayrunm\Replay\Idempotent;
-use Mockery;
-use Mockery\MockInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
 class IdempotentTest extends TestCase
 {
-    private MockInterface $repository;
     private Idempotent $middleware;
+
+    /** @var Repository|MockObject */
+    private $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = Mockery::mock(Repository::class);
+        $this->repository = $this->createMock(Repository::class);
 
         $this->middleware = new Idempotent(
             $this->repository
@@ -38,10 +39,10 @@ class IdempotentTest extends TestCase
         $request->headers->add(['X-Idempotency-Key' => 'abc']);
 
         $this->repository
-            ->expects('get')
-            ->once()
+            ->expects($this->once())
+            ->method('get')
             ->with($request)
-            ->andReturn([
+            ->willReturn([
                 'content' => 'Hello world',
                 'status' => 200,
                 'headers' => ['X-Foo' => 'bar'],
@@ -68,14 +69,14 @@ class IdempotentTest extends TestCase
             ->setStatusCode(200);
 
         $this->repository
-            ->expects('get')
-            ->once()
+            ->expects($this->once())
+            ->method('get')
             ->with($request)
-            ->andReturn(null);
+            ->willReturn(null);
 
         $this->repository
-            ->expects('put')
-            ->once()
+            ->expects($this->once())
+            ->method('put')
             ->with($request, $response);
 
         $result = $this->middleware->handle($request, fn () => $response);
@@ -92,12 +93,14 @@ class IdempotentTest extends TestCase
         $request->headers->add(['X-Idempotency-Key' => 'abc']);
 
         $this->repository
-            ->expects('get')
-            ->once()
+            ->expects($this->once())
+            ->method('get')
             ->with($request)
-            ->andReturn(null);
+            ->willReturn(null);
 
-        $this->repository->expects('put')->never();
+        $this->repository
+            ->expects($this->never())
+            ->method('put');
 
         $response = $this->middleware->handle($request, fn () => (new Response())->setStatusCode(400));
 
