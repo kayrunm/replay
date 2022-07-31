@@ -3,9 +3,8 @@
 namespace Tests;
 
 use Mockery;
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 }

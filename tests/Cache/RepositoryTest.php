@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Cache;
+namespace Tests\Cache;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;

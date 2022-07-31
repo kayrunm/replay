@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -8,7 +8,6 @@ use Illuminate\Http\Response;
 use Kayrunm\Replay\Cache\Repository;
 use Kayrunm\Replay\Replay;
 use PHPUnit\Framework\MockObject\MockObject;
-use Tests\TestCase;
 
 class ReplayTest extends TestCase
 {
