@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
-class Repository
+class ResponseCache
 {
     /** @return array<string, mixed> */
     public function get(Request $request): ?array

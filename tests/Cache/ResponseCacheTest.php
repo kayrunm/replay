@@ -6,10 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
-use Kayrunm\Replay\Cache\Repository;
+use Kayrunm\Replay\Cache\ResponseCache;
 use Tests\TestCase;
 
-class RepositoryTest extends TestCase
+class ResponseCacheTest extends TestCase
 {
     public function test_get_returns_null_when_no_cache_entry_is_found(): void
     {
@@ -21,7 +21,7 @@ class RepositoryTest extends TestCase
         $request = new Request();
         $request->headers->set('X-Idempotency-Key', 'abc');
 
-        $result = (new Repository())->get($request);
+        $result = (new ResponseCache())->get($request);
 
         $this->assertNull($result);
     }
@@ -40,7 +40,7 @@ class RepositoryTest extends TestCase
         $request = new Request();
         $request->headers->set('X-Idempotency-Key', 'abc');
 
-        $result = (new Repository())->get($request);
+        $result = (new ResponseCache())->get($request);
 
         $this->assertSame($response, $result);
     }
@@ -67,6 +67,6 @@ class RepositoryTest extends TestCase
             ->setStatusCode(200)
             ->withHeaders([]);
 
-        (new Repository())->put($request, $response);
+        (new ResponseCache())->put($request, $response);
     }
 }

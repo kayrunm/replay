@@ -5,25 +5,28 @@ namespace Kayrunm\Replay;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Kayrunm\Replay\Cache\Repository;
+use Kayrunm\Replay\Cache\ResponseCache;
+use Kayrunm\Replay\Strategies\Strategy;
 
 class Replay
 {
-    private Repository $repository;
+    private ResponseCache $cache;
+    private Strategy $strategy;
 
-    public function __construct(Repository $repository)
+    public function __construct()
     {
-        $this->repository = $repository;
+        $this->cache = app(ResponseCache::class);
+        $this->strategy = app(Strategy::class);
     }
 
     /** @return mixed */
     public function handle(Request $request, Closure $next)
     {
-        if (! $request->hasHeader('X-Idempotency-Key')) {
+        if (! $this->strategy->isIdempotent($request)) {
             return $next($request);
         }
 
-        if ($response = $this->repository->get($request)) {
+        if ($response = $this->cache->get($request)) {
             return (new Response())
                 ->setContent($response['content'])
                 ->setStatusCode($response['status'])
@@ -35,8 +38,8 @@ class Replay
         /** @var Response $response */
         $response = $next($request);
 
-        if ($response->isSuccessful()) {
-            $this->repository->put($request, $response);
+        if ($this->strategy->shouldCache($response)) {
+            $this->cache->put($request, $response);
         }
 
         return $response;

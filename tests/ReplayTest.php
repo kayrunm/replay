@@ -5,30 +5,34 @@ namespace Tests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Kayrunm\Replay\Cache\Repository;
+use Kayrunm\Replay\Cache\ResponseCache;
 use Kayrunm\Replay\Replay;
+use Kayrunm\Replay\Strategies\Strategy;
+use Mockery\MockInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ReplayTest extends TestCase
 {
     private Replay $middleware;
-
-    /** @var Repository|MockObject */
-    private $repository;
+    private MockInterface $strategy;
+    private MockInterface $cache;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->createMock(Repository::class);
+        $this->strategy = $this->mock(Strategy::class);
+        $this->cache = $this->mock(ResponseCache::class);
 
-        $this->middleware = new Replay(
-            $this->repository
-        );
+        $this->middleware = new Replay();
     }
 
     public function test_requests_without_an_idempotency_key_run_as_normal(): void
     {
+        $this->strategy
+            ->shouldReceive('isIdempotent')
+            ->andReturnFalse();
+
         $this->middleware->handle(new Request(), fn () => $this->assertTrue(true));
     }
 
@@ -37,11 +41,14 @@ class ReplayTest extends TestCase
         $request = new Request();
         $request->headers->add(['X-Idempotency-Key' => 'abc']);
 
-        $this->repository
-            ->expects($this->once())
-            ->method('get')
+        $this->strategy
+            ->shouldReceive('isIdempotent')
+            ->andReturnTrue();
+
+        $this->cache
+            ->shouldReceive('get')
             ->with($request)
-            ->willReturn([
+            ->andReturn([
                 'content' => 'Hello world',
                 'status' => 200,
                 'headers' => ['X-Foo' => 'bar'],
@@ -56,7 +63,7 @@ class ReplayTest extends TestCase
         $this->assertSame('true', $response->headers->get('X-Is-Replay'));
     }
 
-    public function test_it_stores_an_ok_response_in_the_cache(): void
+    public function test_it_stores_a_response_in_the_cache_based_on_the_strategy(): void
     {
         Carbon::setTestNow('2022-07-31 09:30:00');
 
@@ -67,15 +74,21 @@ class ReplayTest extends TestCase
             ->setContent('Hello world')
             ->setStatusCode(200);
 
-        $this->repository
-            ->expects($this->once())
-            ->method('get')
-            ->with($request)
-            ->willReturn(null);
+        $this->strategy
+            ->shouldReceive('isIdempotent')
+            ->andReturnTrue();
 
-        $this->repository
-            ->expects($this->once())
-            ->method('put')
+        $this->strategy
+            ->shouldReceive('shouldCache')
+            ->andReturnTrue();
+
+        $this->cache
+            ->shouldReceive('get')
+            ->with($request)
+            ->andReturn(null);
+
+        $this->cache
+            ->shouldReceive('put')
             ->with($request, $response);
 
         $result = $this->middleware->handle($request, fn () => $response);
@@ -86,20 +99,25 @@ class ReplayTest extends TestCase
         $this->assertFalse($result->headers->has('X-Is-Replay'));
     }
 
-    public function test_an_error_response_is_not_stored_in_the_cache(): void
+    public function test_it_will_not_store_a_response_in_the_cache_based_on_the_strategy(): void
     {
         $request = new Request();
         $request->headers->add(['X-Idempotency-Key' => 'abc']);
 
-        $this->repository
-            ->expects($this->once())
-            ->method('get')
-            ->with($request)
-            ->willReturn(null);
+        $this->strategy
+            ->shouldReceive('isIdempotent')
+            ->andReturnTrue();
 
-        $this->repository
-            ->expects($this->never())
-            ->method('put');
+        $this->strategy
+            ->shouldReceive('shouldCache')
+            ->andReturnFalse();
+
+        $this->cache
+            ->shouldReceive('get')
+            ->with($request)
+            ->andReturn(null);
+
+        $this->cache->shouldNotReceive('put');
 
         $response = $this->middleware->handle($request, fn () => (new Response())->setStatusCode(400));
 
