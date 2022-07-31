@@ -30,7 +30,7 @@ class ResponseCache
 
     private function getKey(Request $request): string
     {
-        $key = is_array($key = $request->header('X-Idempotency-Key'))
+        $key = is_array($key = $request->header(config('replay.header')))
             ? $key[0]
             : $key;
 

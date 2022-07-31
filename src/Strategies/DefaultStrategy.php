@@ -10,7 +10,7 @@ class DefaultStrategy implements Strategy
     public function isIdempotent(Request $request): bool
     {
         return $request->isMethod('POST')
-            && $request->hasHeader('X-Idempotency-Key');
+            && $request->hasHeader(config('replay.header'));
     }
 
     public function shouldCache(Response $response): bool
