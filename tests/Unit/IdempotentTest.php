@@ -5,17 +5,16 @@ namespace Tests\Unit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cache;
 use Kayrunm\Replay\Cache\Repository;
-use Kayrunm\Replay\IdempotentRequest;
+use Kayrunm\Replay\Idempotent;
 use Mockery;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class IdempotentRequestTest extends TestCase
+class IdempotentTest extends TestCase
 {
     private MockInterface $repository;
-    private IdempotentRequest $middleware;
+    private Idempotent $middleware;
 
     protected function setUp(): void
     {
@@ -23,7 +22,7 @@ class IdempotentRequestTest extends TestCase
 
         $this->repository = Mockery::mock(Repository::class);
 
-        $this->middleware = new IdempotentRequest(
+        $this->middleware = new Idempotent(
             $this->repository
         );
     }
