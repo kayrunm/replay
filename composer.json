@@ -15,10 +15,13 @@
     ],
     "require": {
         "php": "^7.4",
-        "illuminate/http": "^8"
+        "illuminate/http": "^8",
+        "illuminate/routing": "^8.83",
+        "illuminate/support": "^8"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.9.5",
+        "mockery/mockery": "^1.5",
         "phpstan/phpstan": "^0.12.2",
         "phpstan/phpstan-phpunit": "^0.12.1",
         "phpunit/phpunit": "^8.5"
