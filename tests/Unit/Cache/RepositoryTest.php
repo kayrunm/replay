@@ -55,7 +55,7 @@ class RepositoryTest extends TestCase
                 return $key === md5('abc:/')
                     && $value['content'] === 'Hello world'
                     && $value['status'] === 200
-                    && is_array($value['headers'])
+                    && $value['headers'] === []
                     && $expiry->is('2022-08-01 10:48:00');
             });
 

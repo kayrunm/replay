@@ -5,6 +5,7 @@ namespace Kayrunm\Replay\Cache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 class Repository
@@ -20,7 +21,10 @@ class Repository
         Cache::put($this->getKey($request), [
             'content' => $response->getContent(),
             'status' => $response->getStatusCode(),
-            'headers' => $response->headers->all(),
+            'headers' => Arr::except($response->headers->all(), [
+                'cache-control',
+                'date',
+            ]),
         ], Carbon::now()->addHours(24));
     }
 
