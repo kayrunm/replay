@@ -25,7 +25,7 @@ class ResponseCache
                 'cache-control',
                 'date',
             ]),
-        ], Carbon::now()->addHours(24));
+        ], Carbon::now()->add(config('replay.expires_in')));
     }
 
     private function getKey(Request $request): string
