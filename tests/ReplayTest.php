@@ -5,12 +5,11 @@ namespace Tests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Kayrunm\Replay\Cache\ResponseCache;
 use Kayrunm\Replay\Replay;
 use Kayrunm\Replay\ReplayResponse;
+use Kayrunm\Replay\ResponseCache;
 use Kayrunm\Replay\Strategies\Strategy;
 use Mockery\MockInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class ReplayTest extends TestCase
 {

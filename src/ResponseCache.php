@@ -1,13 +1,12 @@
 <?php
 
-namespace Kayrunm\Replay\Cache;
+namespace Kayrunm\Replay;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Kayrunm\Replay\ReplayResponse;
+use function config;
 
 class ResponseCache
 {

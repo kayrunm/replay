@@ -1,13 +1,12 @@
 <?php
 
-namespace Tests\Cache;
+namespace Tests;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
-use Kayrunm\Replay\Cache\ResponseCache;
-use Tests\TestCase;
+use Kayrunm\Replay\ResponseCache;
 
 class ResponseCacheTest extends TestCase
 {
