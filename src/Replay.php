@@ -13,10 +13,12 @@ class Replay
     private ResponseCache $cache;
     private Strategy $strategy;
 
-    public function __construct()
-    {
-        $this->cache = app(ResponseCache::class);
-        $this->strategy = app(Strategy::class);
+    public function __construct(
+        ResponseCache $cache,
+        Strategy $strategy
+    ) {
+        $this->cache = $cache;
+        $this->strategy = $strategy;
     }
 
     /** @return mixed */
