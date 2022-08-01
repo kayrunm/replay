@@ -42,7 +42,8 @@ class ResponseCacheTest extends TestCase
 
         $result = (new ResponseCache())->get($request);
 
-        $this->assertSame($response, $result);
+        $this->assertNotNull($result);
+        $this->assertSame($response, $result->toArray());
     }
 
     public function test_put_adds_request_to_cache(): void

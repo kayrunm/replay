@@ -29,12 +29,7 @@ class Replay
         }
 
         if ($response = $this->cache->get($request)) {
-            return (new Response())
-                ->setContent($response['content'])
-                ->setStatusCode($response['status'])
-                ->withHeaders(array_merge($response['headers'], [
-                    'X-Is-Replay' => 'true',
-                ]));
+            return $response->toResponse();
         }
 
         /** @var Response $response */

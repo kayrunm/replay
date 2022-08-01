@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Kayrunm\Replay\Cache\ResponseCache;
 use Kayrunm\Replay\Replay;
+use Kayrunm\Replay\ReplayResponse;
 use Kayrunm\Replay\Strategies\Strategy;
 use Mockery\MockInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -24,7 +25,7 @@ class ReplayTest extends TestCase
         $this->strategy = $this->mock(Strategy::class);
         $this->cache = $this->mock(ResponseCache::class);
 
-        $this->middleware = new Replay();
+        $this->middleware = $this->app->make(Replay::class);
     }
 
     public function test_requests_without_an_idempotency_key_run_as_normal(): void
@@ -48,11 +49,11 @@ class ReplayTest extends TestCase
         $this->cache
             ->shouldReceive('get')
             ->with($request)
-            ->andReturn([
+            ->andReturn(ReplayResponse::fromArray([
                 'content' => 'Hello world',
                 'status' => 200,
                 'headers' => ['X-Foo' => 'bar'],
-            ]);
+            ]));
 
         $response = $this->middleware->handle($request, function () {});
 

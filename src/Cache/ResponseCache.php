@@ -7,25 +7,26 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Kayrunm\Replay\ReplayResponse;
 
 class ResponseCache
 {
-    /** @return array<string, mixed> */
-    public function get(Request $request): ?array
+    public function get(Request $request): ?ReplayResponse
     {
-        return Cache::get($this->getKey($request));
+        if ($data = Cache::get($this->getKey($request))) {
+            return ReplayResponse::fromArray($data);
+        }
+
+        return null;
     }
 
     public function put(Request $request, Response $response): void
     {
-        Cache::put($this->getKey($request), [
-            'content' => $response->getContent(),
-            'status' => $response->getStatusCode(),
-            'headers' => Arr::except($response->headers->all(), [
-                'cache-control',
-                'date',
-            ]),
-        ], Carbon::now()->add(config('replay.expires_in')));
+        Cache::put(
+            $this->getKey($request),
+            ReplayResponse::fromResponse($response)->toArray(),
+            Carbon::now()->add(config('replay.expires_in'))
+        );
     }
 
     private function getKey(Request $request): string
