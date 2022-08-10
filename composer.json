@@ -49,5 +49,12 @@
             "@stan",
             "@style"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kayrunm\\Replay\\ReplayServiceProvider"
+            ]
+        }
     }
 }

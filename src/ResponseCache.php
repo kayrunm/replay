@@ -4,9 +4,8 @@ namespace Kayrunm\Replay;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
-use function config;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResponseCache
 {

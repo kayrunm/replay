@@ -5,8 +5,9 @@ namespace Kayrunm\Replay;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Response;
-use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Http\Response as LaravelResponse;
 use Illuminate\Support\Arr;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class ReplayResponse implements Arrayable, Responsable
 {
@@ -37,7 +38,7 @@ class ReplayResponse implements Arrayable, Responsable
         ];
     }
 
-    public function toResponse($request = null): HttpResponse
+    public function toResponse($request = null): LaravelResponse
     {
         return (new Response())
             ->setContent($this->content)
@@ -57,7 +58,7 @@ class ReplayResponse implements Arrayable, Responsable
         );
     }
 
-    public static function fromResponse(Response $response): self
+    public static function fromResponse(SymfonyResponse $response): self
     {
         return new self(
             $response->getContent() ?: '',
