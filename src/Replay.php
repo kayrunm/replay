@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Kayrunm\Replay\Cache\CacheStrategy;
 use Kayrunm\Replay\Exceptions\MatchingRequestStillExecuting;
-use Kayrunm\Replay\Strategies\Strategy;
+use Kayrunm\Replay\Idempotency\IdempotencyStrategy;
 
 class Replay
 {
     private CacheStrategy $cache;
-    private Strategy $strategy;
+    private IdempotencyStrategy $strategy;
 
     public function __construct(
         CacheStrategy $cache,
-        Strategy $strategy
+        IdempotencyStrategy $strategy
     ) {
         $this->cache = $cache;
         $this->strategy = $strategy;

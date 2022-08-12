@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Kayrunm\Replay\Cache\CacheStrategy;
 use Kayrunm\Replay\Exceptions\MatchingRequestStillExecuting;
+use Kayrunm\Replay\Idempotency\IdempotencyStrategy;
 use Kayrunm\Replay\Replay;
 use Kayrunm\Replay\ReplayResponse;
-use Kayrunm\Replay\Strategies\Strategy;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -23,7 +23,7 @@ class ReplayTest extends TestCase
     {
         parent::setUp();
 
-        $this->strategy = $this->mock(Strategy::class);
+        $this->strategy = $this->mock(IdempotencyStrategy::class);
         $this->cache = $this->mock(CacheStrategy::class);
 
         $this->middleware = $this->app->make(Replay::class);

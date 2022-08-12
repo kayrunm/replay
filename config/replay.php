@@ -4,9 +4,10 @@ return [
 
     'header' => 'X-Idempotency-Key',
 
-    'strategy' => \Kayrunm\Replay\Strategies\DefaultStrategy::class,
-
-    'caching_strategy' => \Kayrunm\Replay\Cache\DefaultCacheStrategy::class,
+    'strategies' => [
+        'caching' => \Kayrunm\Replay\Cache\DefaultCacheStrategy::class,
+        'idempotency' => \Kayrunm\Replay\Idempotency\DefaultIdempotencyStrategy::class,
+    ],
 
     'expires_in' => \Carbon\CarbonInterval::createFromDateString('1 day'),
 ];
