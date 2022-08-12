@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Tests\Unit;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,6 +11,7 @@ use Kayrunm\Replay\ReplayResponse;
 use Kayrunm\Replay\ResponseCache;
 use Kayrunm\Replay\Strategies\Strategy;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class ReplayTest extends TestCase
 {
