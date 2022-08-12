@@ -5,6 +5,7 @@ namespace Kayrunm\Replay;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Kayrunm\Replay\Exceptions\MatchingRequestStillExecuting;
 use Kayrunm\Replay\Strategies\Strategy;
 
 class Replay
@@ -20,7 +21,10 @@ class Replay
         $this->strategy = $strategy;
     }
 
-    /** @return mixed */
+    /**
+     * @throws MatchingRequestStillExecuting
+     * @return mixed
+     */
     public function handle(Request $request, Closure $next)
     {
         if (! $this->strategy->isIdempotent($request)) {
@@ -31,12 +35,18 @@ class Replay
             return $response->toResponse();
         }
 
+        if (! $this->cache->lock($request)) {
+            throw new MatchingRequestStillExecuting();
+        }
+
         /** @var Response $response */
         $response = $next($request);
 
         if ($this->strategy->shouldCache($response)) {
             $this->cache->put($request, $response);
         }
+
+        $this->cache->release();
 
         return $response;
     }

@@ -5,6 +5,7 @@ namespace Tests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Kayrunm\Replay\Exceptions\MatchingRequestStillExecuting;
 use Kayrunm\Replay\Replay;
 use Kayrunm\Replay\ReplayResponse;
 use Kayrunm\Replay\ResponseCache;
@@ -85,11 +86,19 @@ class ReplayTest extends TestCase
         $this->cache
             ->shouldReceive('get')
             ->with($request)
-            ->andReturn(null);
+            ->andReturnNull();
+
+        $this->cache
+            ->shouldReceive('lock')
+            ->andReturnTrue();
 
         $this->cache
             ->shouldReceive('put')
             ->with($request, $response);
+
+        $this->cache
+            ->shouldReceive('release')
+            ->once();
 
         $result = $this->middleware->handle($request, fn () => $response);
 
@@ -113,16 +122,46 @@ class ReplayTest extends TestCase
             ->andReturnFalse();
 
         $this->cache
+            ->shouldReceive('lock')
+            ->andReturnTrue();
+
+        $this->cache
             ->shouldReceive('get')
             ->with($request)
-            ->andReturn(null);
+            ->andReturnNull();
 
         $this->cache->shouldNotReceive('put');
+
+        $this->cache
+            ->shouldReceive('release')
+            ->once();
 
         $response = $this->middleware->handle($request, fn () => (new Response())->setStatusCode(400));
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(400, $response->getStatusCode());
         $this->assertFalse($response->headers->has('X-Is-Replay'));
+    }
+
+    public function test_an_exception_is_thrown_if_a_lock_could_not_be_obtained(): void
+    {
+        $this->expectException(MatchingRequestStillExecuting::class);
+        $request = new Request();
+        $request->headers->add(['X-Idempotency-Key' => 'abc']);
+
+        $this->strategy
+            ->shouldReceive('isIdempotent')
+            ->andReturnTrue();
+
+        $this->cache
+            ->shouldReceive('get')
+            ->with($request)
+            ->andReturnNull();
+
+        $this->cache
+            ->shouldReceive('lock')
+            ->andReturnFalse();
+
+        $result = $this->middleware->handle($request, function () {});
     }
 }
