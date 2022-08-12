@@ -25,7 +25,9 @@ class DefaultCacheStrategy implements CacheContract
 
     public function lock(Request $request): bool
     {
-        return $this->lock = Cache::lock($this->getKey($request))->get();
+        $this->lock = Cache::lock($this->getKey($request));
+
+        return $this->lock->get();
     }
 
     public function release(): void
