@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
-use Kayrunm\Replay\ResponseCache;
+use Kayrunm\Replay\Cache\DefaultCacheStrategy;
 use Tests\TestCase;
 
 class ResponseCacheTest extends TestCase
@@ -21,7 +21,7 @@ class ResponseCacheTest extends TestCase
         $request = new Request();
         $request->headers->set('X-Idempotency-Key', 'abc');
 
-        $result = (new ResponseCache())->get($request);
+        $result = (new DefaultCacheStrategy())->get($request);
 
         $this->assertNull($result);
     }
@@ -40,7 +40,7 @@ class ResponseCacheTest extends TestCase
         $request = new Request();
         $request->headers->set('X-Idempotency-Key', 'abc');
 
-        $result = (new ResponseCache())->get($request);
+        $result = (new DefaultCacheStrategy())->get($request);
 
         $this->assertNotNull($result);
         $this->assertSame($response, $result->toArray());
@@ -68,6 +68,6 @@ class ResponseCacheTest extends TestCase
             ->setStatusCode(200)
             ->withHeaders([]);
 
-        (new ResponseCache())->put($request, $response);
+        (new DefaultCacheStrategy())->put($request, $response);
     }
 }

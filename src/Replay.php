@@ -5,16 +5,17 @@ namespace Kayrunm\Replay;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Kayrunm\Replay\Cache\CacheStrategy;
 use Kayrunm\Replay\Exceptions\MatchingRequestStillExecuting;
 use Kayrunm\Replay\Strategies\Strategy;
 
 class Replay
 {
-    private ResponseCache $cache;
+    private CacheStrategy $cache;
     private Strategy $strategy;
 
     public function __construct(
-        ResponseCache $cache,
+        CacheStrategy $cache,
         Strategy $strategy
     ) {
         $this->cache = $cache;

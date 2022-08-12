@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Kayrunm\Replay\ReplayResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-interface Cache
+interface CacheStrategy
 {
     public function get(Request $request): ?ReplayResponse;
 
