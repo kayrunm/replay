@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Kayrunm\Replay\Replay;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class IdempotencyTest extends TestCase
@@ -47,6 +48,6 @@ class IdempotencyTest extends TestCase
 
         $this
             ->post('/', [], ['X-Idempotency-Key' => 'Foo'])
-            ->assertStatus(500);
+            ->assertStatus(Response::HTTP_CONFLICT);
     }
 }

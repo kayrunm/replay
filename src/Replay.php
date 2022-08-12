@@ -37,7 +37,7 @@ class Replay
         }
 
         if (! $this->cache->lock($request)) {
-            throw new MatchingRequestStillExecuting();
+            throw MatchingRequestStillExecuting::for($request);
         }
 
         /** @var Response $response */
