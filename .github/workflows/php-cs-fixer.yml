@@ -1,6 +1,9 @@
 name: Fix code style
 
-on: [push, pull_request]
+on:
+    pull_request:
+        branches:
+            - main
 
 jobs:
     php-cs-fixer:
