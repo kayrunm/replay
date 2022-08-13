@@ -1,8 +1,9 @@
 <?php
 
-namespace Kayrunm\Replay\Idempotency;
+namespace Kayrunm\Replay;
 
 use Illuminate\Http\Request;
+use Kayrunm\Replay\Contracts\IdempotencyStrategy;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultIdempotencyStrategy implements IdempotencyStrategy

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kayrunm\Replay\Idempotency;
+namespace Kayrunm\Replay\Contracts;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

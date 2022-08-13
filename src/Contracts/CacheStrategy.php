@@ -1,6 +1,6 @@
 <?php
 
-namespace Kayrunm\Replay\Cache;
+namespace Kayrunm\Replay\Contracts;
 
 use Illuminate\Http\Request;
 use Kayrunm\Replay\ReplayResponse;

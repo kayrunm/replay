@@ -3,8 +3,8 @@
 namespace Kayrunm\Replay;
 
 use Illuminate\Support\ServiceProvider;
-use Kayrunm\Replay\Cache\CacheStrategy;
-use Kayrunm\Replay\Idempotency\IdempotencyStrategy;
+use Kayrunm\Replay\Contracts\CacheStrategy;
+use Kayrunm\Replay\Contracts\IdempotencyStrategy;
 
 class ReplayServiceProvider extends ServiceProvider
 {

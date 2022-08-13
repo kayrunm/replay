@@ -1,13 +1,12 @@
 <?php
 
-namespace Kayrunm\Replay\Cache;
+namespace Kayrunm\Replay;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Cache\Lock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Kayrunm\Replay\Cache\CacheStrategy as CacheContract;
-use Kayrunm\Replay\ReplayResponse;
+use Kayrunm\Replay\Contracts\CacheStrategy as CacheContract;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultCacheStrategy implements CacheContract
