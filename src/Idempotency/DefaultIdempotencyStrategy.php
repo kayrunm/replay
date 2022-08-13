@@ -1,11 +1,11 @@
 <?php
 
-namespace Kayrunm\Replay\Strategies;
+namespace Kayrunm\Replay\Idempotency;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultStrategy implements Strategy
+class DefaultIdempotencyStrategy implements IdempotencyStrategy
 {
     public function isIdempotent(Request $request): bool
     {

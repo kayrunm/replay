@@ -3,7 +3,8 @@
 namespace Kayrunm\Replay;
 
 use Illuminate\Support\ServiceProvider;
-use Kayrunm\Replay\Strategies\Strategy;
+use Kayrunm\Replay\Cache\CacheStrategy;
+use Kayrunm\Replay\Idempotency\IdempotencyStrategy;
 
 class ReplayServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,7 @@ class ReplayServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/replay.php', 'replay');
 
-        $this->app->bind(Strategy::class, config('replay.strategy'));
+        $this->app->bind(CacheStrategy::class, config('replay.strategies.caching'));
+        $this->app->bind(IdempotencyStrategy::class, config('replay.strategies.idempotency'));
     }
 }
