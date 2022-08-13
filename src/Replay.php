@@ -5,9 +5,9 @@ namespace Kayrunm\Replay;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Kayrunm\Replay\Cache\CacheStrategy;
+use Kayrunm\Replay\Contracts\CacheStrategy;
+use Kayrunm\Replay\Contracts\IdempotencyStrategy;
 use Kayrunm\Replay\Exceptions\MatchingRequestStillExecuting;
-use Kayrunm\Replay\Idempotency\IdempotencyStrategy;
 
 class Replay
 {
