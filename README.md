@@ -1,11 +1,26 @@
 # 📽 Replay
-A simple package for handling idempotent requests in Laravel.
+A simple package for handling idempotent requests in Laravel. 
+
+Any routes using the Replay middleware will check for whether an incoming request meets certain
+criteria, and if so, it will cache the request for 24 hours so that any subsequent requests
+will always receive the same response. 
 
 ## Installation
 
 Require Replay using Composer:
 ```bash
 composer require kayrunm/replay
+```
+
+## Usage
+
+To get started with using Replay, all you need to do is attach the `Replay` middleware to whichever
+routes you wish to allow for idempotent requests. For example:
+
+```php
+use Kayrunm\Replay\Replay;
+
+Route::post('/account/{account}/transfer', [TransferController::class, 'store'])->middleware(Replay::class);
 ```
 
 ## Configuration
@@ -16,6 +31,8 @@ publish the config file with the following command:
 ```bash
 php artisan vendor:publish --tag="replay"
 ```
+
+## Strategies
 
 This package uses the strategy pattern for both determining which requests should be idempotent
 and for storing their responses in the cache. You can view the default strategies for these
