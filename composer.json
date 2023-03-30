@@ -23,7 +23,7 @@
         "friendsofphp/php-cs-fixer": "^3.9.5",
         "mockery/mockery": "^1.5",
         "orchestra/testbench": "^6.24|^8.1.1",
-        "phpstan/phpstan": "^0.12.2",
+        "phpstan/phpstan": "^0.12.2|^1.10",
         "phpunit/phpunit": "^8.5|^9.6"
     },
     "autoload": {
