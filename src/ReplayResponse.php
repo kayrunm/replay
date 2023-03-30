@@ -9,6 +9,9 @@ use Illuminate\Http\Response as LaravelResponse;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
+/**
+ * @implements Arrayable<string, mixed>
+ */
 class ReplayResponse implements Arrayable, Responsable
 {
     private string $content;

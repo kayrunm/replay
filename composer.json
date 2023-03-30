@@ -14,17 +14,17 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
-        "illuminate/http": "^8.0|^9.0",
-        "illuminate/routing": "^8.0|^9.0",
-        "illuminate/support": "^8.0|^9.0"
+        "php": "^7.4|^8.0|^8.1",
+        "illuminate/http": "^8.0|^9.0|^10.0",
+        "illuminate/routing": "^8.0|^9.0|^10.0",
+        "illuminate/support": "^8.0|^9.0|^10.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.9.5",
         "mockery/mockery": "^1.5",
-        "orchestra/testbench": "^6.24",
-        "phpstan/phpstan": "^0.12.2",
-        "phpunit/phpunit": "^8.5"
+        "orchestra/testbench": "^6.24|^8.1.1",
+        "phpstan/phpstan": "^0.12.2|^1.10",
+        "phpunit/phpunit": "^8.5|^9.6"
     },
     "autoload": {
         "psr-4": {
