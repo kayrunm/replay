@@ -3,11 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
         colors="true"
-        executionOrder="depends,defects"
-        beStrictAboutCoversAnnotation="true"
-        beStrictAboutOutputDuringTests="true"
-        beStrictAboutTodoAnnotatedTests="true"
-        verbose="true"
+        cacheDirectory=".phpunit.cache"
 >
     <testsuites>
         <testsuite name="Tests">
@@ -15,9 +11,9 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
+    <source>
+        <include>
             <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </source>
 </phpunit>
